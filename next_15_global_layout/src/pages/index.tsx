@@ -7,12 +7,22 @@ import { ReactNode } from "react";
 // CSS Module을 사용하면 불러올 수 있으며
 // className에 불러온 style.(css에서 지정한 선택자)로 작성하면 다른 컴포넌트와 중복되지않게 알아서 적용한다.
 
+import books from '@/mock/books.json'
+import BookItem from "@/components/book-item";
+
+
 export default function Home() {
   return (
-    <>
-      <h1 className={style.h1}>index</h1>
-      <h2 className={style.h2}>H2</h2>
-    </>
+    <div  className={style.container}>
+      <section>
+        <h3>지금 추천하는 도서</h3>
+        {books.map((book)=><BookItem key={book.id}{...book}/>)}
+      </section>
+      <section>
+        <h3>등록된 모든 도서</h3>
+        {books.map((book)=><BookItem key={book.id}{...book}/>)}
+      </section>
+    </div>
   );
 }
 
