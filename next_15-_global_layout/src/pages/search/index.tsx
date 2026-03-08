@@ -1,28 +1,35 @@
 import SearchableLayout from "@/components/searchable-layout";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 // import books from "@/mock/books.json";
 import BookItem from "@/components/book-item";
 import {
   GetServerSideProps,
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
+  InferGetStaticPropsType,
 } from "next";
 import fetchBooks from "@/lib/fetch-books";
+import { useRouter } from "next/router";
+import { BookData } from "@/types";
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const q = context.query.q;
-  const books = await fetchBooks(q as string);
+// export const getStaticProps = async () => {};
 
-  return {
-    props: { books },
+export default function Page() {
+  const [books, setBooks] = useState<BookData[]>([]);
+  const route = useRouter();
+  const q = route.query.q;
+
+  const fetchSearchResult = async () => {
+    const book = await fetchBooks(q as string);
+    setBooks(book);
   };
-};
 
-export default function Page({
-  books,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  useEffect(() => {
+    if (q) {
+      fetchSearchResult();
+    }
+  }, [q]);
+
   return (
     <div>
       {books.map((book) => {

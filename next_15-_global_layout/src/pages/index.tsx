@@ -9,11 +9,12 @@ import { ReactNode, useEffect } from "react";
 
 import books from "@/mock/books.json";
 import BookItem from "@/components/book-item";
-import { InferGetServerSidePropsType } from "next";
+import { InferGetServerSidePropsType, InferGetStaticPropsType } from "next";
 import fetchBooks from "@/lib/fetch-books";
 import fetchRandomBooks from "@/lib/fetch-random-books";
 
-export const getServerSideProps = async () => {
+export const getStaticProps = async () => {
+  console.log("인덱스페이지");
   // //  getServerSideProps == 약속된 이름의 함수, ssr로 작동함.
   // // 컴포넌트보다 먼저 실행되어서, 컴포넌트에 필요한 데이터 불러오는 함수
   // // return 값 방식도 프레임워크에 의해 강제된다.
@@ -40,10 +41,7 @@ export const getServerSideProps = async () => {
 
 export default function Home(
   // type은 InferGetServerSidePropsType를 불러와 사용하고, getServerSideProps의 타입을 추론하게 한다.
-  {
-    allBooks,
-    recoBooks,
-  }: InferGetServerSidePropsType<typeof getServerSideProps>,
+  { allBooks, recoBooks }: InferGetStaticPropsType<typeof getStaticProps>,
 ) {
   // console.log("recoBooks", recoBooks);
   // ssr 방식으로 작동하도록 설정했기때문에 getServerSideProps함수 외의 해당 컴포넌트에서도

@@ -1,6 +1,12 @@
 import type { BookData } from "@/types";
 import style from "./[id].module.css";
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import {
+  GetServerSidePropsContext,
+  GetStaticPathsContext,
+  GetStaticPropsContext,
+  InferGetServerSidePropsType,
+  InferGetStaticPropsType,
+} from "next";
 import fetchOneBook from "@/lib/fetch-one-books";
 const mockData: BookData = {
   id: 1,
@@ -13,10 +19,29 @@ const mockData: BookData = {
   coverImgUrl:
     "https://shopping-phinf.pstatic.net/main_3888828/38888282618.20230913071643.jpg",
 };
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  // console.log(context.params!.id);
+
+export const getStaticPaths = () => {
+  // 반드시 문자열. 규칙임
+  return {
+    paths: [
+      { params: { id: "1" } },
+      { params: { id: "2" } },
+      { params: { id: "3" } },
+    ],
+    //현재는 임의로 1,2,3 넣어놨으나 실제 목록을 가져와서 적용해야함.
+    fallback: false, // 대체, 대비책, 보험, 존재하지않는 id접속시 어떻게 알할건가? false면 notfound 페이지
+  };
+};
+
+export const getStaticProps = async (context: GetStaticPropsContext) => {
+  // console.log(context);
+  /**
+   * params: { id: '3' },
+   * locales: undefined,
+   * locale: undefined,
+   * defaultLocale: undefined,
+   * revalidateReason: 'build'
+   */
   const id = context.params!.id;
   const book = await fetchOneBook(Number(id));
   return {
@@ -26,7 +51,7 @@ export const getServerSideProps = async (
 
 export default function Page({
   book,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   if (!book) return "문제가 발생했습니다 다시 시도하세요";
 
   const { id, title, subTitle, description, author, publisher, coverImgUrl } =

@@ -18,19 +18,26 @@ const mockData: BookData = {
     "https://shopping-phinf.pstatic.net/main_3888828/38888282618.20230913071643.jpg",
 };
 export const getServerSideProps = async (
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ) => {
   // console.log(context.params!.id);
   const id = context.params!.id;
-  const bookData = await fetchBooks(id as string);
+  const data = await fetchBooks(id as string); // 여기서 data는 배열일 확률이 높습니다.
+
+  // 데이터가 없거나 배열인 경우를 대비해 첫 번째 아이템만 추출
+  const bookData = Array.isArray(data) ? data[0] : data;
+
+  if (!bookData) {
+    return { notFound: true }; // 데이터가 없으면 404 페이지로 보냄
+  }
   return {
     props: { bookData },
   };
 };
 
-export default function Page(
-  bookData: InferGetServerSidePropsType<typeof getServerSideProps>
-) {
+export default function Page({
+  bookData,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { id, title, subTitle, description, author, publisher, coverImgUrl } =
     bookData;
 
