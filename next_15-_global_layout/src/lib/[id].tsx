@@ -1,7 +1,11 @@
 import type { BookData } from "@/types";
 import style from "./[id].module.css";
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
-import fetchOneBook from "@/lib/fetch-one-books";
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType,
+} from "next";
+import fetchBooks from "@/lib/fetch-books";
 const mockData: BookData = {
   id: 1,
   title: "한 입 크기로 잘라 먹는 리액트",
@@ -18,19 +22,17 @@ export const getServerSideProps = async (
 ) => {
   // console.log(context.params!.id);
   const id = context.params!.id;
-  const book = await fetchOneBook(Number(id));
+  const bookData = await fetchBooks(id as string);
   return {
-    props: { book },
+    props: { bookData },
   };
 };
 
-export default function Page({
-  book,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  if (!book) return "문제가 발생했습니다 다시 시도하세요";
-
+export default function Page(
+  bookData: InferGetServerSidePropsType<typeof getServerSideProps>
+) {
   const { id, title, subTitle, description, author, publisher, coverImgUrl } =
-    book;
+    bookData;
 
   return (
     <div className={style.container}>
