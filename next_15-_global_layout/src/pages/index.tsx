@@ -36,6 +36,7 @@ export const getStaticProps = async () => {
       allBooks,
       recoBooks,
     },
+    revalidate: 10, // isr 적용. n초마다 재생성.
   };
 };
 

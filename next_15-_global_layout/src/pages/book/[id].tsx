@@ -8,6 +8,7 @@ import {
   InferGetStaticPropsType,
 } from "next";
 import fetchOneBook from "@/lib/fetch-one-books";
+import { useRouter } from "next/router";
 const mockData: BookData = {
   id: 1,
   title: "한 입 크기로 잘라 먹는 리액트",
@@ -29,7 +30,9 @@ export const getStaticPaths = () => {
       { params: { id: "3" } },
     ],
     //현재는 임의로 1,2,3 넣어놨으나 실제 목록을 가져와서 적용해야함.
-    fallback: false, // 대체, 대비책, 보험, 존재하지않는 id접속시 어떻게 알할건가? false면 notfound 페이지
+    // fallback: false, // 대체, 대비책, 보험, 존재하지않는 id접속시 어떻게 알할건가? false면 notfound 페이지
+    // fallback: "blocking", // blocking 이면 첫요청엔 ssr로 보여지고 ssg로 페이지를 생성함. 페이지는 .next/server/page/book/에 있음
+    fallback: true, // true는 생성되지않은 페이지 접속시 일단 레이아웃을 제공하고 props를 나중에 가져옴. 가져오면 ssg로 .next에 페이지 생성됨. router.isFallback로 로딩시점의 레이아웃을 제공해주는게 좋음. ,  getStaticProps에서 props를 가져오지 못했을때 return {notfound:true} 를 해주면 404페이지로 이동됨.
   };
 };
 
@@ -44,6 +47,12 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
    */
   const id = context.params!.id;
   const book = await fetchOneBook(Number(id));
+
+  if (!book) {
+    return {
+      notFound: true,
+    };
+  }
   return {
     props: { book },
   };
@@ -52,6 +61,9 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
 export default function Page({
   book,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const router = useRouter();
+  if (router.isFallback) return "로딩중입니다.";
+
   if (!book) return "문제가 발생했습니다 다시 시도하세요";
 
   const { id, title, subTitle, description, author, publisher, coverImgUrl } =
