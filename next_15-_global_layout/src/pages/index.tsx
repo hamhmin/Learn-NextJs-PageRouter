@@ -7,14 +7,18 @@ import { ReactNode, useEffect } from "react";
 // CSS Module을 사용하면 불러올 수 있으며
 // className에 불러온 style.(css에서 지정한 선택자)로 작성하면 다른 컴포넌트와 중복되지않게 알아서 적용한다.
 
-import books from "@/mock/books.json";
+// import books from "@/mock/books.json";
 import BookItem from "@/components/book-item";
-import { InferGetServerSidePropsType, InferGetStaticPropsType } from "next";
+import {
+  // InferGetServerSidePropsType,
+  InferGetStaticPropsType,
+} from "next";
 import fetchBooks from "@/lib/fetch-books";
 import fetchRandomBooks from "@/lib/fetch-random-books";
 
+import Head from "next/head";
+
 export const getStaticProps = async () => {
-  console.log("인덱스페이지");
   // //  getServerSideProps == 약속된 이름의 함수, ssr로 작동함.
   // // 컴포넌트보다 먼저 실행되어서, 컴포넌트에 필요한 데이터 불러오는 함수
   // // return 값 방식도 프레임워크에 의해 강제된다.
@@ -56,20 +60,31 @@ export default function Home(
 
   // console.log(props.data);
   return (
-    <div className={style.container}>
-      <section>
-        <h3>지금 추천하는 도서</h3>
-        {recoBooks.map((book) => (
-          <BookItem key={book.id} {...book} />
-        ))}
-      </section>
-      <section>
-        <h3>등록된 모든 도서</h3>
-        {allBooks.map((book) => (
-          <BookItem key={book.id} {...book} />
-        ))}
-      </section>
-    </div>
+    <>
+      <Head>
+        <title>한입북스</title>
+        <meta property="og:image" content="/thumbnail.png" />
+        <meta property="og:title" content="한입북스" />
+        <meta
+          property="og:descroption"
+          content="한입 북스에 등록된 도서들을 만나보세요."
+        />
+      </Head>
+      <div className={style.container}>
+        <section>
+          <h3>지금 추천하는 도서</h3>
+          {recoBooks.map((book) => (
+            <BookItem key={book.id} {...book} />
+          ))}
+        </section>
+        <section>
+          <h3>등록된 모든 도서</h3>
+          {allBooks.map((book) => (
+            <BookItem key={book.id} {...book} />
+          ))}
+        </section>
+      </div>
+    </>
   );
 }
 
