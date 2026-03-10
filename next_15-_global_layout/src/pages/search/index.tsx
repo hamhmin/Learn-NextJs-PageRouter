@@ -38,7 +38,7 @@ export default function Page() {
         <meta property="og:image" content="/thumbnail.png" />
         <meta property="og:title" content="한입북스 - 검색결과" />
         <meta
-          property="og:descroption"
+          property="og:description"
           content="한입 북스에 등록된 도서들을 만나보세요."
         />
       </Head>
