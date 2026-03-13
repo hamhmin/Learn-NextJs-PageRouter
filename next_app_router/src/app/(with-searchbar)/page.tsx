@@ -26,8 +26,8 @@ async function RecoBooks() {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/random`,
     // { cache: "force-cache" },
-    // { next: { revalidate: 3 } }, // 3초 이후의 첫요청까진 데이터 패칭됨. 3초이후+3초이후의첫요청 => 패칭된 데이터는 stale 상태가 되어 신규 요청함.
-    { next: { tags: ["a"] } }, // 상시 패칭, 요청시마다 초기화
+    { next: { revalidate: 3 } }, // 3초 이후의 첫요청까진 데이터 패칭됨. 3초이후+3초이후의첫요청 => 패칭된 데이터는 stale 상태가 되어 신규 요청함.
+    // { next: { tags: ["a"] } }, // 상시 패칭, 요청시마다 초기화
   );
   if (!response.ok) {
     return <div>오류가 발생했습니다... index/.page.tsx fn:RecoBooks</div>;
