@@ -1,5 +1,7 @@
 import BookItem from "@/components/book-item";
 import { BookData } from "@/types";
+import Loading from "./loading";
+import { delay } from "@/util/delay";
 // export const dynamic = "force-static";
 // dynamic 페이지를 static으로 만들면 ssg로 되기때문에 fetch 값이 undefined가 됨. 제대로 작동 안할 수 있음.
 
@@ -12,12 +14,13 @@ export default async function Page({
   searchParams: Promise<{ q?: string }>;
 }) {
   const { q } = await searchParams;
+  await delay(3000);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${q}`,
     { cache: "force-cache" },
   );
   if (!response.ok) {
-    return <div>오류가 발생했습니다... search/page.tsx</div>;
+    return <Loading />;
   }
   const searchBooks: BookData[] = await response.json();
 
