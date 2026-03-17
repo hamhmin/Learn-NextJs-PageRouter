@@ -3,6 +3,7 @@ import { BookData } from "@/types";
 import Loading from "./loading";
 import { delay } from "@/util/delay";
 import { Suspense } from "react";
+import BookListSkeleton from "@/components/skeleton/book-list-skeleton";
 // export const dynamic = "force-static";
 // dynamic 페이지를 static으로 만들면 ssg로 되기때문에 fetch 값이 undefined가 됨. 제대로 작동 안할 수 있음.
 
@@ -37,7 +38,10 @@ export default function Page({
   // Suspence : 미완성
   // fallback : 대체제
   return (
-    <Suspense key={searchParams.q || ""} fallback={<div>Loading ...</div>}>
+    <Suspense
+      key={searchParams.q || ""}
+      fallback={<BookListSkeleton count={4} />}
+    >
       <SearchResult q={searchParams.q || ""} />;
     </Suspense>
   );
