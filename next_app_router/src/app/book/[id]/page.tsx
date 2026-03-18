@@ -4,6 +4,7 @@ import { createReviewAction } from "@/actions/create-review.action";
 import { ReviewData } from "@/types";
 import ReviewItem from "@/components/review-item";
 import { ReviewEditor } from "@/components/review-editor";
+import next from "next";
 // export const dynamicParams = false; // 설정시 모든 접속에서 원치않는 static 페이지가 생성되는 현상을 막아줌.
 // false 옵션으로 쓰면 createReviewAction 이 함수 실행 후 book페이지 재검증할때 페이지 재생성하지못해 오류생김. 현재는 notFound()로 처리하고있으니 주석해도됨.
 
@@ -52,7 +53,7 @@ async function BookDetail({ bookId }: { bookId: string }) {
 async function ReviewList({ bookId }: { bookId: string }) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/review/book/${bookId}`,
-    { method: "GET" },
+    { method: "GET", next: { tags: [`review-${bookId}`] } },
   );
   if (!response.ok) {
     throw new Error(`Review fetch failed : ${response.statusText}`);
