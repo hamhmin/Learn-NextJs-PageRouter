@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import style from "./page.module.css";
+import { createReviewAction } from "@/actions/create-review.action";
 
 export const dynamicParams = false; // 설정시 모든 접속에서 원치않는 static 페이지가 생성되는 현상을 막아줌.
 
@@ -44,20 +45,13 @@ async function BookDetail({ bookId }: { bookId: string }) {
   );
 }
 
-function ReviewEditor() {
-  async function createReviewAction(formData: FormData) {
-    "use server"; // 서버에서만 실행됨.
-    const content = formData.get("content")?.toString();
-    const author = formData.get("author")?.toString();
-    // const author: FormDataEntryValue | null 라서 ?.toString() 으로 string|undefined로 추론하게 만든다.
-    console.log(content, author);
-  }
-
+function ReviewEditor({ bookId }: { bookId: string }) {
   return (
     <section>
       <form action={createReviewAction}>
-        <input type="text" name="content" placeholder="리뷰 내용" />
-        <input type="text" name="author" placeholder="작성자" />
+        <input name="bookId" value={bookId} hidden readOnly />
+        <input required name="content" placeholder="리뷰 내용" />
+        <input required name="author" placeholder="작성자" />
         <button type="submit">작성하기</button>
       </form>
     </section>
@@ -69,10 +63,11 @@ export default async function Page({
 }: {
   params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   return (
     <div className={style.container}>
-      <BookDetail bookId={(await params).id} />
-      <ReviewEditor />
+      <BookDetail bookId={id} />
+      <ReviewEditor bookId={id} />
     </div>
   );
 }
