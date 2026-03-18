@@ -11,7 +11,7 @@ import BookListSkeleton from "@/components/skeleton/book-list-skeleton";
 // 4. error : 페이지를 강제로 Static 페이지 설정 (설정하면 안되는 이유를 -> 빌드시 오류 발생시킴)
 
 async function SearchResult({ q }: { q: string }) {
-  await delay(3000);
+  await delay(300);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${q}`,
     { cache: "force-cache" },
@@ -42,7 +42,7 @@ export default function Page({
       key={searchParams.q || ""}
       fallback={<BookListSkeleton count={4} />}
     >
-      <SearchResult q={searchParams.q || ""} />;
+      <SearchResult q={searchParams.q || ""} />
     </Suspense>
   );
 }
