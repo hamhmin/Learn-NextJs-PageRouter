@@ -30,19 +30,18 @@ async function SearchResult({ q }: { q: string }) {
   );
 }
 
-export default function Page({
+export default async function Page({
   searchParams,
 }: {
-  searchParams: { q?: string };
+  searchParams: Promise<{ q?: string }>;
 }) {
+  const { q } = await searchParams;
+
   // Suspence : 미완성
   // fallback : 대체제
   return (
-    <Suspense
-      key={searchParams.q || ""}
-      fallback={<BookListSkeleton count={4} />}
-    >
-      <SearchResult q={searchParams.q || ""} />
+    <Suspense key={q} fallback={<BookListSkeleton count={4} />}>
+      <SearchResult q={q || ""} />
     </Suspense>
   );
 }

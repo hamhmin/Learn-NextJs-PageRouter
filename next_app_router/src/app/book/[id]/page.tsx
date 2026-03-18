@@ -4,7 +4,8 @@ import { createReviewAction } from "@/actions/create-review.action";
 import { ReviewData } from "@/types";
 import ReviewItem from "@/components/review-item";
 import { ReviewEditor } from "@/components/review-editor";
-export const dynamicParams = false; // 설정시 모든 접속에서 원치않는 static 페이지가 생성되는 현상을 막아줌.
+// export const dynamicParams = false; // 설정시 모든 접속에서 원치않는 static 페이지가 생성되는 현상을 막아줌.
+// false 옵션으로 쓰면 createReviewAction 이 함수 실행 후 book페이지 재검증할때 페이지 재생성하지못해 오류생김. 현재는 notFound()로 처리하고있으니 주석해도됨.
 
 // ssg의 getStaticProps fallback:blocking, getStaticPaths 설정하는거랑 같음.
 // 하지만 풀라우터캐시에 저장되기때문에 generateStaticParams로 return한 id를 포함한 페이지와 첫 접속 이후 생성된 페이지들은 데이터 패칭을 하는게 아니라 풀라우터캐시에서 가져오기때문에 그 (데이터패칭을 포함한 사전렌더링단계)다음단계를 가지않아서 데이터패칭을 할 필요가 없어지기 때문에 데이터패칭을 안하는거임.
@@ -18,6 +19,7 @@ export function generateStaticParams() {
 async function BookDetail({ bookId }: { bookId: string }) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/${bookId}`,
+    { cache: "force-cache" },
   );
   if (!response.ok) {
     if (response.status === 404) {
