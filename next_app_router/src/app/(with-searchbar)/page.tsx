@@ -15,7 +15,7 @@ import BookListSkeleton from "@/components/skeleton/book-list-skeleton";
 // 4. error : 페이지를 강제로 Static 페이지 설정 (설정하면 안되는 이유를 -> 빌드시 오류 발생시킴)
 
 async function AllBooks() {
-  await delay(1500);
+  // await delay(1500);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book`,
     // { cache: "no-store" },
@@ -35,7 +35,7 @@ async function AllBooks() {
   );
 }
 async function RecoBooks() {
-  await delay(3000);
+  // await delay(3000);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/random`,
     // { cache: "force-cache" },
