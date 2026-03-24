@@ -5,6 +5,7 @@ import { ReviewData } from "@/types";
 import ReviewItem from "@/components/review-item";
 import { ReviewEditor } from "@/components/review-editor";
 import next from "next";
+import Image from "next/image";
 // export const dynamicParams = false; // 설정시 모든 접속에서 원치않는 static 페이지가 생성되는 현상을 막아줌.
 // false 옵션으로 쓰면 createReviewAction 이 함수 실행 후 book페이지 재검증할때 페이지 재생성하지못해 오류생김. 현재는 notFound()로 처리하고있으니 주석해도됨.
 
@@ -38,7 +39,12 @@ async function BookDetail({ bookId }: { bookId: string }) {
         className={style.cover_img_container}
         style={{ backgroundImage: `url('${coverImgUrl}')` }}
       >
-        <img src={coverImgUrl} />
+        <Image
+          src={coverImgUrl}
+          alt={`도서 ${title}의 표지 이미지`}
+          width={256}
+          height={350}
+        />
       </div>
       <div className={style.title}>{title}</div>
       <div className={style.subTitle}>{subTitle}</div>
