@@ -1,3 +1,3 @@
-export default function Page(props: any) {
+export default function Page() {
   return <div>parallel</div>;
 }

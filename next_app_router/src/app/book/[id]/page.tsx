@@ -14,8 +14,19 @@ import Image from "next/image";
 
 // 이때 "fetch 옵션에 "force-cache"를 설정하지 않았음에도 어떻게 이럴 수 있느냐"고 질문 주셨는데요
 // 동적 경로를 갖는 페이지에 한해 예외적으로! generateStaticParams 함수가 존재한다면, 무조건 Static 페이지로 설정하게 됩니다.
-export function generateStaticParams() {
-  return [{ id: "1" }, { id: "2" }, { id: "3" }];
+export async function generateStaticParams() {
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book`,
+  );
+  if (!response.ok) {
+    throw new Error(response.statusText);
+  }
+  const books: BookData[] = await response.json();
+  const booksId = books.map((book) => ({
+    id: book.id.toString(),
+  }));
+  return booksId;
+  // return [{ id: "1" }, { id: "2" }, { id: "3" }];
 }
 
 async function BookDetail({ bookId }: { bookId: string }) {

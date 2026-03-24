@@ -2,9 +2,9 @@ import BookItem from "@/components/book-item";
 import style from "./page.module.css";
 // import books from "@/mock/books.json";
 import { BookData } from "@/types";
-import { delay } from "@/util/delay";
+// import { delay } from "@/util/delay";
 import { Suspense } from "react";
-import BookItemSkeleton from "@/components/skeleton/book-item-skeleton";
+// import BookItemSkeleton from "@/components/skeleton/book-item-skeleton";
 import BookListSkeleton from "@/components/skeleton/book-list-skeleton";
 import { Metadata } from "next";
 

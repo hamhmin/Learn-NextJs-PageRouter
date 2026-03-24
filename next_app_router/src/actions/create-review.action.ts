@@ -1,7 +1,5 @@
 "use server";
-import { delay } from "@/util/delay";
 import { revalidateTag } from "next/cache";
-import { revalidatePath } from "next/cache";
 
 // 서버에서만 실행됨.
 export async function createReviewAction(state: any, formData: FormData) {

@@ -12,7 +12,7 @@ import { Metadata } from "next";
 // 4. error : 페이지를 강제로 Static 페이지 설정 (설정하면 안되는 이유를 -> 빌드시 오류 발생시킴)
 
 async function SearchResult({ q }: { q: string }) {
-  await delay(300);
+  // await delay(300);
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/search?q=${q}`,
     { cache: "force-cache" },

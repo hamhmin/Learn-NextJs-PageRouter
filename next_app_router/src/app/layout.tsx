@@ -33,7 +33,7 @@ export default function RootLayout({
       <body>
         <div className={style.container}>
           <header>
-            <Link href={"/"}>📚 ONEBITE BOOKS</Link>
+            <Link href={"/"}>📚 HAMHMIN BOOKS</Link>
           </header>
           <main>{children}</main>
           <Footer />
